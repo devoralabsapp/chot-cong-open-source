@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Dedicated project baseline. Admin SDK is authorized in the server layer.
+    // Review existing broad allow rules before merging into a shared project.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

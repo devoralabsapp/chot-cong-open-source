@@ -1,0 +1,35 @@
+node_modules/
+.local-tools/
+.next/
+.env*
+!.env.example
+*-debug.log
+.firebase/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+emulator-data/
+.vercel/
+next-env.d.ts
+.vercel
+
+# Encrypted operational archives and recovery keys stay outside source/deployments.
+*.ccbackup
+*.cckey
+backup-data/
+
+# Credentials, runtime data and private operational artifacts
+*.pem
+*.p12
+*.pfx
+*.key
+*service-account*.json
+*serviceAccount*.json
+credentials*.json
+*.log
+*.har
+*.ccbackup
+*.cckey
+
+docs/screenshots/

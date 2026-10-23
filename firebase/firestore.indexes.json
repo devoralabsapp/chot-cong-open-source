@@ -1,0 +1,343 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "students",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "archivedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "displayName",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "sessions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "studentId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sessionDate",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "sessions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "billable",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "billedStatementId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "amountVnd",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "sessions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "studentId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "billable",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "billedStatementId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sessionDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "statements",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "statements",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "studentId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "statements",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "studentId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "payments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "statementId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "receivedDate",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "payments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "statementId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "voidedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "receivedDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "payments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "voidedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "receivedDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "amountVnd",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "statements",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "paidVnd",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "totalVnd",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "statements",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "dueDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "paidVnd",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "totalVnd",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "users",
+      "fieldPath": "bankDetails",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "students",
+      "fieldPath": "contactName",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "students",
+      "fieldPath": "phone",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "students",
+      "fieldPath": "privateNote",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "sessions",
+      "fieldPath": "studentName",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "sessions",
+      "fieldPath": "privateNote",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "operationRequests",
+      "fieldPath": "*",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "statements",
+      "fieldPath": "items",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "statements",
+      "fieldPath": "teacherSnapshot",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "statements",
+      "fieldPath": "recipientSnapshot",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "statements",
+      "fieldPath": "bankSnapshot",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "statements",
+      "fieldPath": "voidReason",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "statements",
+      "fieldPath": "activeShareTokenHash",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "payments",
+      "fieldPath": "privateNote",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "payments",
+      "fieldPath": "voidReason",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "payments",
+      "fieldPath": "requestId",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "shareRateLimits",
+      "fieldPath": "*",
+      "indexes": []
+    }
+  ]
+}
