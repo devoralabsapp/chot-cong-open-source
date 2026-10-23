@@ -1,7 +1,9 @@
-# Báo lỗi bảo mật
+# Security reporting
 
-Không đăng secret, token, cookie, dữ liệu học viên hoặc chi tiết khai thác một hệ thống đang vận hành vào issue công khai. Nếu repository bật GitHub Private Vulnerability Reporting, dùng mục Security → Report a vulnerability. Nếu chưa có kênh riêng, chỉ tạo issue xin cách liên hệ mà không đưa chi tiết nhạy cảm.
+**English** | [Tiếng Việt](SECURITY.vi.md)
 
-Mã nguồn được cung cấp theo MIT, không kèm cam kết SLA hoặc lịch hỗ trợ. Người tự triển khai chịu trách nhiệm cấu hình Firebase/IAM/Rules/indexes, OAuth, HTTPS, quyền truy cập, backup và cập nhật dependency. Emulator và test có guard chỉ dành cho dữ liệu giả local/CI.
+Do not post secrets, tokens, cookies, student data, or exploit details for a live deployment in public issues. If GitHub Private Vulnerability Reporting is enabled, use **Security → Report a vulnerability**. If a private channel is unavailable, open an issue asking how to contact the maintainers without including sensitive details.
 
-Bản public được xuất với lịch sử Git mới, cấu hình demo và placeholder cloud. Không commit .env.local, kho credential, dữ liệu Emulator, ảnh vận hành hoặc browser traces. Nếu vô tình công khai secret, thu hồi/rotate ngay; xóa file ở commit mới không loại bỏ nó khỏi lịch sử Git.
+The source is provided under the MIT License, without an SLA or a guaranteed support schedule. Self-hosting operators are responsible for Firebase/IAM/Rules/indexes, OAuth, HTTPS, access control, backups, and dependency updates. Emulator and guarded test scripts are intended only for fake data in local development and CI.
+
+This public edition starts with fresh Git history, demo configuration, and cloud placeholders. Do not commit `.env.local`, credential stores, emulator data, operational screenshots, or browser traces. If a secret is accidentally published, revoke or rotate it immediately. Deleting a file in a later commit does not remove it from Git history.

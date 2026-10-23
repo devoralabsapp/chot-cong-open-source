@@ -1,34 +1,36 @@
-# Kiến trúc và quy tắc nghiệp vụ
+# Architecture and business rules
 
-Next.js App Router, React, TypeScript, Tailwind 4, Firebase Authentication và Cloud Firestore. Node 24; dependencies pin exact theo lockfile. Không tự đổi bundler/dependency khi sửa một lỗi nghiệp vụ.
+**English** | [Tiếng Việt](ARCHITECTURE.vi.md)
 
-| Thư mục | Nội dung |
+Next.js App Router, React, TypeScript, Tailwind 4, Firebase Authentication, and Cloud Firestore. Node 24; dependencies are pinned exactly in the lockfile. Keep bundler and dependency changes separate from unrelated business fixes.
+
+| Directory | Contents |
 |---|---|
-| `src/app` | Trang và API Node |
-| `src/domain` | Schema, tiền, ngày, bảng kê và dữ liệu xuất |
-| `src/lib/firebase` | Auth client, Admin server và OIDC/WIF |
-| `src/lib/server` | Repository, session, giao thức HTTP, transaction |
-| `src/features` | Giao diện học viên/lớp/buổi/bảng kê/thu tiền/chia sẻ |
-| `firebase` | Rules, indexes và kiểm thử Rules độc lập |
-| `tests/integration` | HTTP/backend hai UID, transaction và các ca dữ liệu |
-| `tests/e2e` | Chromium, popup thật của Auth Emulator, retry và reload |
+| `src/app` | Pages and Node APIs |
+| `src/domain` | Schemas, money, dates, statements, and export data |
+| `src/lib/firebase` | Client Auth, server Admin, and OIDC/WIF |
+| `src/lib/server` | Repositories, sessions, HTTP handling, and transactions |
+| `src/features` | Student, class, lesson, statement, payment, and sharing UI |
+| `firebase` | Rules, indexes, and independent Rules tests |
+| `tests/integration` | HTTP/backend isolation with two UIDs, transactions, and data workflows |
+| `tests/e2e` | Chromium, real Auth Emulator popups, retries, and reloads |
 
-## Ranh giới dữ liệu
+## Data boundaries
 
-Mọi thao tác nghiệp vụ qua API server. UID chỉ lấy từ session Firebase đã kiểm tra thu hồi; không nhận ownerId/path do browser cung cấp. Dữ liệu riêng trong `apps/chotcong/users/{uid}`. Admin SDK bỏ qua Rules, nên kiểm tra backend hai UID khác với kiểm tra Rules deny client.
+All business operations go through server APIs. Derive the UID from a revocation-checked Firebase session; never accept browser-supplied owner IDs or document paths. Private data lives under `apps/chotcong/users/{uid}`. Admin SDK bypasses Rules, so backend isolation tests and client Rules tests provide separate evidence.
 
-Cookie phiên HttpOnly/Lax, Secure trên HTTPS, tối đa 5 ngày. Browser Auth dùng bộ nhớ, ID token recent-auth đổi lấy cookie rồi sign out client. Mutation kiểm tra Origin/CSRF, strict payload/body limit, khóa idempotency UUID. Không cache xác minh phiên giữa các request; không lưu token/học phí vào browser storage hoặc log.
+Session cookies are HttpOnly/Lax, Secure on HTTPS, and last up to five days. Browser Auth uses memory persistence: exchange a recent-auth ID token for a server cookie, then sign out the client. Mutations check Origin/CSRF, strict payloads/body limits, and UUID idempotency keys. Do not cache session verification between requests or store tokens/tuition data in browser storage or logs.
 
-## Bất biến
+## Invariants
 
-- Tiền nguyên VND và safe integer; ngày nghiệp vụ YYYY-MM-DD theo Việt Nam; Timestamp hệ thống do server tạo, có schemaVersion.
-- Đổi đơn giá học viên/lớp không đổi buổi đã lưu. Lớp tối đa 50 người, chỉ tính người được chọn; mỗi người có dòng học phí và bảng kê riêng.
-- Transaction đọc hết trước ghi. Tạo result ID ngoài callback; callback có thể retry. Payload giống và cùng request ID trả cùng kết quả; cùng ID nhưng payload khác bị từ chối.
-- Bảng kê tối đa 100 buổi đủ điều kiện. Phát hành chốt snapshot/counter và khóa billedStatementId cùng transaction. Nháp không là khoản phải thu; hủy chỉ khi không có khoản thu hợp lệ.
-- Thu tiền không vượt số thiếu; vô hiệu hóa giữ lịch sử, đối chiếu paidVnd/count với payments.
-- Link dùng mã ngẫu nhiên ở fragment `/s#token`; browser gửi POST body, server chỉ giữ hash. Có preview/expiry/rotation/revoke và allowlist nội dung công khai. Không log mã, cookie hoặc headers.
-- Export phân trang cùng server readTime; ZIP/CSV không phải backup Firestore. Xóa tài khoản là state machine có lease/checkpoint và khóa ghi/link; không xóa tài khoản thật để chạy thử.
+- Money uses safe integer VND; business dates use YYYY-MM-DD in Vietnam. System Timestamps are generated on the server and documents carry schemaVersion.
+- Changing a student's or class's default rate does not alter saved lessons. Classes support up to 50 students, charging only selected participants; each student has separate tuition rows and statements.
+- Transactions read before writing. Create result IDs outside callbacks, which may retry. The same payload and request ID return the same result; a different payload with that ID is rejected.
+- Statements contain at most 100 eligible lessons. Issuing a statement commits snapshots/counters and billedStatementId locks in one transaction. Drafts do not create receivables; voiding requires no valid payment records.
+- Payments cannot exceed the outstanding balance. Voiding preserves history; reconcile paidVnd/count with payment records.
+- Share links use random tokens in the `/s#token` fragment. The browser sends a POST body; the server stores only a hash. Sharing includes preview, expiry, rotation, revocation, and a public response allowlist. Never log tokens, cookies, or headers.
+- Export pages share a server readTime; ZIP/CSV exports are not Firestore backups. Account deletion is a state machine with leases/checkpoints and write/link locks. Never delete real accounts for testing.
 
-## Giới hạn
+## Limits
 
-Không thanh toán ngân hàng tự động, lịch lặp, gói trả trước hoặc phân quyền trung tâm. Manifest chỉ là lối mở nhanh; không service worker/offline cache. Kiểm thử Emulator không chứng minh index/IAM/OAuth hoặc khả năng cài app trên thiết bị thật. Kiểm thử cloud cần staging riêng và dữ liệu giả.
+There are no automatic bank payments, recurring schedules, prepaid packages, or multi-staff center permissions. The manifest provides a launch shortcut, without a service worker or offline cache. Emulator tests do not prove cloud indexes, IAM, OAuth, or installation on real devices. Cloud checks need isolated staging and fake data.

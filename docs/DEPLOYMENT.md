@@ -1,34 +1,36 @@
-# Tự triển khai bằng hạ tầng của bạn
+# Self-hosting on your own infrastructure
 
-Local/CI dùng `demo-chotcong` và loopback, không credential cloud. Để deploy bản riêng, bạn phải cung cấp Firebase/Vercel/IAM của mình. Giữ `.env.local` dùng Emulator; không tải biến production về file này.
+**English** | [Tiếng Việt](DEPLOYMENT.vi.md)
 
-## Chuẩn bị
+Local development and CI use `demo-chotcong` on loopback without cloud credentials. Supply your own Firebase, Vercel, and IAM resources for a hosted deployment. Keep `.env.local` dedicated to emulators; do not pull production variables into it.
 
-1. Tạo Firebase project riêng, bật Google provider và Web App. Chọn location Firestore trước khi tạo database. Kiểm tra hạn mức và chi phí của dịch vụ bạn định bật.
-2. Tạo Vercel project từ fork/repository của bạn, Node 24, `npm ci`, `npm run build`. Dùng một hostname HTTPS ổn định. Đặt APP_ORIGIN đúng origin; thêm hostname vào authorized domains của Firebase Auth.
-3. Rà soát/deploy `firebase/firestore.rules` và `firebase/firestore.indexes.json` vào đúng project. Rules chặn mọi client; Admin API vẫn cần isolation theo UID. Chờ composite indexes READY. Nếu project dùng chung ứng dụng khác, phải rà soát Rules/indexes hiện hữu, không ghi đè hoặc xóa cấu hình lạ.
-4. Thiết lập quyền backend theo phần WIF bên dưới, cấu hình đủ biến, build lại để chốt NEXT_PUBLIC config. Giữ login khóa khi cấu hình thiếu.
+## Preparation
 
-## Biến môi trường trên hosting
+1. Create a separate Firebase project, enable the Google provider, and register a Web App. Choose the Firestore location before creating the database. Review quotas and costs for services you enable.
+2. Create a Vercel project from your fork/repository, using Node 24, `npm ci`, and `npm run build`. Use a stable HTTPS hostname. Set APP_ORIGIN to that exact origin and add its hostname to Firebase Auth authorized domains.
+3. Review and deploy `firebase/firestore.rules` and `firebase/firestore.indexes.json` to the correct project. Rules deny all clients; Admin APIs still need UID isolation. Wait for composite indexes to be READY. For a shared project, review existing Rules/indexes and preserve unrelated configuration.
+4. Set up backend access using WIF below, complete the environment configuration, and rebuild to embed NEXT_PUBLIC settings. Keep sign-in unavailable when configuration is incomplete.
 
-Lấy giá trị web config từ Firebase Web App của bạn, đặt:
+## Hosting environment variables
 
-- `APP_ORIGIN`: HTTPS origin của bản triển khai.
-- `FIREBASE_PROJECT_ID` và `NEXT_PUBLIC_FIREBASE_PROJECT_ID`: cùng project thật của bạn.
-- `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` và các web app identifier nếu có.
-- `NEXT_PUBLIC_FIREBASE_USE_EMULATORS=false`; không có `FIREBASE_AUTH_EMULATOR_HOST` hoặc `FIRESTORE_EMULATOR_HOST`.
+Use your Firebase Web App's configuration:
+
+- `APP_ORIGIN`: your deployment's HTTPS origin.
+- `FIREBASE_PROJECT_ID` and `NEXT_PUBLIC_FIREBASE_PROJECT_ID`: the same real project you own.
+- `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, and any additional Web App identifiers.
+- `NEXT_PUBLIC_FIREBASE_USE_EMULATORS=false`; omit `FIREBASE_AUTH_EMULATOR_HOST` and `FIRESTORE_EMULATOR_HOST`.
 - `FIREBASE_ADMIN_AUTH_MODE=vercel-oidc`.
-- `GCP_WORKLOAD_IDENTITY_PROVIDER`: resource name đầy đủ của provider do bạn tạo.
-- `GCP_SERVICE_ACCOUNT_EMAIL`: service account trong cùng Firebase project.
-- `NODE_OPTIONS=--experimental-require-module` cho runtime Vercel dùng Firebase Admin ESM.
+- `GCP_WORKLOAD_IDENTITY_PROVIDER`: the full resource name of your WIF provider.
+- `GCP_SERVICE_ACCOUNT_EMAIL`: a service account in that Firebase project.
+- `NODE_OPTIONS=--experimental-require-module` for Vercel's runtime with Firebase Admin ESM.
 
-Không đưa credential vào NEXT_PUBLIC. Không copy OIDC token cũ, không hardcode access token hoặc commit service-account key. Ở môi trường Node ngoài Vercel, adapter hỗ trợ ADC từ GOOGLE_APPLICATION_CREDENTIALS; cất credential ngoài checkout và dùng hệ thống quản lý secret của môi trường đó. Emulator chỉ dành cho local/CI.
+Never put credentials in NEXT_PUBLIC variables, copy old OIDC tokens, hardcode access tokens, or commit service-account keys. On Node hosts outside Vercel, the adapter supports ADC through GOOGLE_APPLICATION_CREDENTIALS; keep credentials outside the checkout and use your host's secret management. Emulators are local/CI only.
 
 ## Vercel OIDC / Workload Identity Federation
 
-Ứng dụng hiện chỉ cho OIDC trên môi trường kỹ thuật **Production** của Vercel project đã được trust. Preview không dùng production identity. Để thử staging, dùng Firebase project và Vercel project staging riêng; không nới trust project production cho mọi preview.
+The application currently permits OIDC only in the technical **Production** environment of the trusted Vercel project. Previews do not use its production identity. For staging, use separate Firebase and Vercel projects; do not broaden production trust to all previews.
 
-Script `scripts/gcp/setup-vercel-wif.sh` là template quản trị: sau khi rà soát IAM, cung cấp **định danh của bạn**:
+`scripts/gcp/setup-vercel-wif.sh` is an administrative template. After reviewing IAM changes, provide **your own identifiers**:
 
 ```bash
 export CC_PROJECT_ID=your-firebase-project
@@ -40,24 +42,24 @@ export CC_VERCEL_PROJECT_ID=YOUR_VERCEL_PROJECT_ID
 bash scripts/gcp/setup-vercel-wif.sh --print-config
 ```
 
-Dùng ID chính xác do Google/Vercel trả về, thay tất cả placeholder. `--print-config` chỉ in định danh không bí mật. Script từ chối thiếu/sai định dạng. Để thực sự tạo API/pool/provider/service account và cấp quyền dữ liệu/Auth, cần gcloud đã xác thực có quyền quản trị, rồi đặt `CC_CONFIRM_PROJECT` bằng đúng CC_PROJECT_ID và chạy không tham số. Đây là thao tác IAM có tác động thật: đọc script, kiểm tra project number và quyền trước khi chạy. Script dừng nếu provider hiện hữu khác cấu hình; không tạo private key.
+Replace every placeholder with exact values returned by Google/Vercel. `--print-config` prints non-secret identifiers only. Missing or malformed values are rejected. To create APIs/pool/provider/service account and grant data/Auth permissions, authenticate gcloud with appropriate administrative permissions, set `CC_CONFIRM_PROJECT` to the exact CC_PROJECT_ID, and run the script without arguments. This performs real IAM changes: read the script and verify the project number and permissions first. It stops if an existing provider differs from the expected configuration and creates no private key.
 
-Trust ràng buộc issuer/audience team, immutable team ID/project ID, environment production và subject chính xác. Không cấp Owner/Editor cho runtime. Quyền Datastore User/Firebase Auth Admin vẫn rộng ở cấp project; dùng project riêng khi cần cách ly dữ liệu.
+Trust restricts issuer/audience, immutable team/project IDs, the production environment, and the exact subject. Do not grant Owner/Editor to the runtime. Datastore User/Firebase Auth Admin permissions remain broad within a project; use separate projects for data isolation.
 
-## Áp dụng cấu hình và preflight
+## Configuration deployment and preflight
 
-Thông thường dùng Firebase Console/CLI có chọn project rõ ràng sau khi rà soát. Helper `scripts/gcp/apply-firestore-config.ts` được giữ để tham khảo cơ chế apply an toàn: **target đang là placeholder `your-firebase-project`, project number `000000000000`**. Trước khi dùng cloud helper, đổi cả hai hằng số/allowlist sang định danh của bạn và cập nhật fixture unit tương ứng. Không để placeholder làm target thực.
+Normally, review the configuration and deploy it through Firebase Console/CLI with an explicit project. `scripts/gcp/apply-firestore-config.ts` is retained as a safe-apply reference: **its target is the placeholder `your-firebase-project`, with project number `000000000000`**. Before using it against cloud resources, replace both the target and project-number allowlist with your identifiers and update the corresponding unit fixtures. Never use the placeholder as a real target.
 
-Helper chỉ chạy khi FIREBASE_APPLY_CONFIG bằng đúng target cố định, Vercel Production/OIDC đầy đủ, không Emulator. Nó từ chối Rules lạ, chỉ thêm index thiếu, giữ cấu hình không liên quan và chờ READY. Nếu chọn đường này, cấp quyền Rules/indexes có giới hạn cho đúng project trong thời gian áp dụng, rồi gỡ quyền cấu hình và FIREBASE_APPLY_CONFIG khi xong. Build bình thường chỉ đọc.
+The helper runs only when FIREBASE_APPLY_CONFIG matches its fixed target, Vercel Production/OIDC configuration is complete, and emulators are disabled. It rejects unfamiliar Rules, adds missing indexes, preserves unrelated configuration, and waits for READY. If you use this path, grant limited Rules/index permissions for the target while applying changes, then remove those permissions and FIREBASE_APPLY_CONFIG. Normal builds are read-only.
 
-Prebuild kiểm tra token exchange, Auth read, Firestore và query/index trong namespace UID ngẫu nhiên không tồn tại; không tạo user hoặc dữ liệu học phí. Build qua không thay Google OAuth thật, quyền ghi hoặc kiểm thử hai tài khoản/thu hồi phiên.
+Prebuild checks token exchange, Auth reads, Firestore, and query/index shapes under a random nonexistent UID namespace, without creating users or tuition data. A successful build does not replace real Google OAuth, write permissions, or two-account/revocation checks.
 
-## Xác minh sau triển khai
+## Post-deployment checks
 
 ```bash
 npm run check:public -- https://your-app.example
 ```
 
-Dùng origin của bạn; mặc định lệnh chỉ hướng về localhost. Lệnh public smoke chỉ đọc: trang công khai, 5 trang riêng/10 API anonymous, HTTPS cookies/cache/referrer, manifest/icons; không xác thực hoặc ghi business data.
+Supply your origin; the default targets localhost. Public smoke checks are read-only: public pages, five protected pages/ten anonymous API requests, HTTPS cookies/cache/referrer controls, manifest, and icons. They do not authenticate or write business data.
 
-Trên staging với dữ liệu giả, kiểm tra Google login A/B, HTTP không truy cập chéo UID, client Rules bị từ chối, revoke phiên A không ảnh hưởng B, giá/bảng kê/thu tiền đúng, link rotate/revoke, export/delete/recovery. Kiểm tra thiết bị thật và cách nhận hỗ trợ trước mời người dùng. Tự xác định backup/retention/khôi phục phù hợp; source hiện chỉ có công cụ diễn tập backup Emulator, không backup cloud tự động.
+On staging with fake data, check Google login A/B, HTTP UID isolation, client Rules denial, revoking A without affecting B, prices/statements/payments, share link rotation/revocation, export, deletion, and recovery. Test real devices and define support arrangements before inviting users. Establish your own backup/retention/recovery strategy; this source includes only an Emulator backup rehearsal tool, not automatic cloud backups.

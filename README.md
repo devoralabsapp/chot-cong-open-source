@@ -1,20 +1,24 @@
 # Chốt Công · Open Source
 
-Sổ buổi dạy và học phí tiếng Việt cho giáo viên tự do: cá nhân, nhóm hoặc lớp học; tính theo buổi và thu sau. Bạn có thể chạy trên máy, tự triển khai hoặc fork để phát triển theo nhu cầu của mình. Phát hành theo [MIT](LICENSE).
+**English** | [Tiếng Việt](README.vi.md)
 
-## Tính năng
+A lesson and tuition ledger for independent teachers, supporting individual lessons, groups, and classes billed after each lesson. Run it locally, self-host it, or fork it to fit your workflow. Released under the [MIT License](LICENSE).
 
-- Đăng nhập Google; phiên server HttpOnly, kiểm tra thu hồi, CSRF và Origin.
-- Học viên, đơn giá, lưu trữ/khôi phục; lớp tối đa 50 người và buổi nhóm với giá riêng được chụp tại thời điểm ghi.
-- Bảng kê từng học viên, phát hành/hủy, thu từng phần và vô hiệu hóa khoản thu nhập sai.
-- Link bảng kê có thời hạn/thu hồi; tổng quan, tìm kiếm, bộ lọc, CSV/ZIP/JSON và xóa tài khoản.
-- Năm giao diện: Modern, Vintage, Art, Natura, Ocean; bố cục tối ưu điện thoại.
+Repository documentation defaults to English. The application interface is currently in Vietnamese, with VND amounts and Vietnam business dates.
 
-Mọi đọc/ghi nghiệp vụ đi qua Node server API. Firebase client chỉ dùng cho Auth; Firestore Rules chặn client trực tiếp. Không có chế độ lưu học phí offline.
+## Features
 
-## Chạy local trong vài bước
+- Google sign-in; HttpOnly server sessions, revocation checks, CSRF and Origin protection.
+- Students, default rates, archiving/restoring, classes of up to 50 students, and group lessons with saved price snapshots.
+- Per-student statements, issue/void workflows, partial payments, and voiding incorrect payment records.
+- Expiring and revocable statement links; dashboard, search, filters, CSV/ZIP/JSON export, and account deletion.
+- Five themes: Modern, Vintage, Art, Natura, and Ocean, with mobile-friendly layouts.
 
-Cần **Node.js 24.x**, npm, **Java 21** và Git. Dùng Node theo `.nvmrc`. Trên macOS, chọn đúng binary Intel (`x86_64`) hoặc Apple Silicon (`arm64`); nếu Java chưa được chọn, dùng `export JAVA_HOME="$(/usr/libexec/java_home -v 21)"` và thêm `$JAVA_HOME/bin` vào PATH. Windows có thể dùng WSL với công cụ cài trong WSL.
+All business reads and writes go through Node server APIs. The Firebase client is used only for Auth; Firestore Rules deny direct client access. Tuition data is not stored offline.
+
+## Quick start
+
+Install **Node.js 24.x**, npm, **Java 21**, and Git. The Node version is specified in `.nvmrc`. On macOS, choose the matching Intel (`x86_64`) or Apple Silicon (`arm64`) binary. If needed, select Java with `export JAVA_HOME="$(/usr/libexec/java_home -v 21)"` and add `$JAVA_HOME/bin` to PATH. On Windows, you can use WSL with tools installed inside WSL.
 
 ```bash
 git clone https://github.com/devoralabsapp/chot-cong-open-source.git
@@ -24,31 +28,31 @@ test -e .env.local || cp .env.example .env.local
 npm run emulators
 ```
 
-Chờ **All emulators ready**, rồi ở terminal thứ hai, cùng thư mục:
+Wait for **All emulators ready**, then open a second terminal in the same directory:
 
 ```bash
 npm run dev
 ```
 
-Mở **http://localhost:3000**. Dùng đúng `localhost`, vì APP_ORIGIN và relay Auth Emulator cần cùng hostname. Đăng nhập Google sẽ mở giao diện **Firebase Auth Emulator**, không phải Google cloud. Thêm tài khoản giả, không dùng thông tin thật.
+Open **http://localhost:3000**. Use `localhost` exactly: APP_ORIGIN and the Auth Emulator relay depend on the same hostname. The Google sign-in button opens the **Firebase Auth Emulator**, not real Google OAuth. Create a fake account and use test data only.
 
-Không cần tài khoản Google Cloud, Firebase project thật, service-account key hoặc Vercel để chạy local. `.firebaserc` mặc định là `demo-chotcong`. Lần đầu cần mạng để tải Emulator/Chromium.
+You do not need a Google Cloud account, a real Firebase project, a service-account key, or Vercel for local use. `.firebaserc` defaults to `demo-chotcong`. The first run needs network access to download emulator/browser binaries.
 
-### Dữ liệu mẫu
+### Sample data
 
-Khi Emulator đã sẵn sàng, terminal thứ ba:
+With the emulators ready, open a third terminal:
 
 ```bash
 npm run seed
 ```
 
-Trong Google Emulator chọn **Add new account**, nhập email giả `mai@example.test`. Sổ mẫu gồm học viên Lan, 8 buổi × 200.000đ và 1 buổi hủy. Seed lặp lại an toàn. Guard chặn project thật hoặc host ngoài loopback.
+In the Google Emulator, choose **Add new account** and use the fake email `mai@example.test`. The sample ledger contains student Lan, eight completed lessons at VND 200,000 each, and one cancelled lesson. Seeding is idempotent. Guards reject real projects and non-loopback hosts.
 
-Emulator UI: http://localhost:4100. Khi dừng Emulator bằng Ctrl+C, dữ liệu xuất vào `emulator-data/`; lần mở sau tự import. Thư mục này chỉ ở máy bạn và bị Git ignore. Xem [diễn tập backup local](docs/BACKUP_RESTORE.md) nếu cần thử công cụ mã hóa/khôi phục dữ liệu giả.
+Emulator UI: http://localhost:4100. When stopped with Ctrl+C, the emulators export data to `emulator-data/` and import it automatically on the next start. This directory stays on your machine and is ignored by Git. See the [local backup rehearsal](docs/BACKUP_RESTORE.md) to try encrypted backups and restores with fake data.
 
-Cổng mặc định: 3000 (web), 9099 (Auth), 8180 (Firestore), 4100 (UI), 4400/4500 (hub/logging), 9150 (websocket). Dừng đúng tiến trình mình sở hữu nếu cổng bận; dự án Firebase khác có thể dùng chung các cổng này.
+Default ports: 3000 (web), 9099 (Auth), 8180 (Firestore), 4100 (UI), 4400/4500 (hub/logging), and 9150 (websocket). Stop only processes you own when resolving a port conflict; another Firebase project may use the same ports.
 
-## Kiểm thử
+## Checks
 
 ```bash
 npm run lint
@@ -59,18 +63,18 @@ npx playwright install chromium
 npm run test:emulator
 ```
 
-Dừng web/Emulator local của dự án trước `test:emulator`. Runner tự dựng môi trường demo, build Webpack, chạy backend/Rules/Playwright rồi dọn các tiến trình nó tạo. Không chuyển test/seed sang cloud. CI dùng Node 24/Java 21, không cần credential cloud.
+Stop this project's web server and emulators before `test:emulator`. The runner starts a demo environment, builds with Webpack, runs backend/Rules/Playwright checks, and cleans up its processes. Do not point tests or seed scripts at cloud projects. CI uses Node 24 and Java 21 without cloud credentials.
 
-Dev và build đều dùng Webpack. `typecheck` chạy Next typegen trước TypeScript. Framework có tài liệu tương ứng phiên bản tại `node_modules/next/dist/docs/`.
+Development and production builds both use Webpack. `typecheck` runs Next type generation before TypeScript. Version-matched framework documentation is available in `node_modules/next/dist/docs/`.
 
-## Tự triển khai
+## Self-hosting
 
-Đọc [DEPLOYMENT](docs/DEPLOYMENT.md). Bạn cần Firebase project, Google provider, database/Rules/indexes, hostname HTTPS và quyền IAM của riêng mình. Mã nguồn hỗ trợ Vercel OIDC/WIF để tránh private key. Các script cloud là template, cần cấu hình và rà soát target trước khi dùng; không chạy nguyên mẫu với dữ liệu thật.
+Read [DEPLOYMENT](docs/DEPLOYMENT.md). You need your own Firebase project, Google provider, database/Rules/indexes, HTTPS hostname, and IAM permissions. The source supports Vercel OIDC/WIF to avoid private keys. Cloud scripts are templates: configure and review their targets before using them with real data.
 
-Bản public độc lập, không chứa dữ liệu tài khoản, biến môi trường, lịch sử Git private, ảnh vận hành hoặc định danh cloud của bản triển khai khác. Việc đưa app lên hosting không tự chứng minh Google OAuth, IAM, HTTPS cookie, index cloud hay cài đặt trên thiết bị thật hoạt động.
+This public edition is independent of any existing deployment. It excludes account data, actual environment files, private Git history, operational screenshots, and another deployment's cloud identifiers. Deploying the app does not by itself verify Google OAuth, IAM, HTTPS cookies, cloud indexes, or installation on real devices.
 
-## Phát triển tiếp
+## Development
 
-Xem [ARCHITECTURE](docs/ARCHITECTURE.md), [CONTRIBUTING](CONTRIBUTING.md) và [SECURITY](SECURITY.md). Tiền là số nguyên VND, ngày nghiệp vụ theo Asia/Ho_Chi_Minh; giữ price snapshot, transaction idempotency và khóa `billedStatementId` khi sửa nghiệp vụ.
+See [ARCHITECTURE](docs/ARCHITECTURE.md), [CONTRIBUTING](CONTRIBUTING.md), and [SECURITY](SECURITY.md). Amounts are integer VND and business dates use Asia/Ho_Chi_Minh. Preserve price snapshots, transaction idempotency, and `billedStatementId` locks when changing business logic.
 
-Giấy phép MIT áp dụng cho mã nguồn dự án. Dependency giữ giấy phép tương ứng; không bao gồm quyền đối với dịch vụ hoặc tài khoản của bên thứ ba. Các tên/email trong seed và fixture là dữ liệu giả.
+The MIT License covers the project's source code. Dependencies retain their own licenses; no rights to third-party services or accounts are included. Names and emails in seeds and fixtures are fictional.

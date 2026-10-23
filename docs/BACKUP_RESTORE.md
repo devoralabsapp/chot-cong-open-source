@@ -1,34 +1,36 @@
-# Sao lưu và diễn tập khôi phục local
+# Local backup and restore rehearsal
 
-## Trạng thái và giới hạn
+**English** | [Tiếng Việt](BACKUP_RESTORE.vi.md)
 
-Source bao gồm công cụ **chỉ chạy trên Emulator**, không có chế độ cloud hoặc endpoint backup công khai. Source cố định `demo-chotcong`, target cố định `demo-chotcong-restore` trên cùng Firestore Emulator loopback. Guard độc lập từ chối project thật/host ngoài loopback trước SDK I/O. Đã chuẩn bị cơ chế bảo trì ở backend; không bật bảo trì production trong mốc này.
+## Status and scope
 
-**Chưa có backup production, lịch hằng ngày, nơi lưu lâu dài, retention hoặc diễn tập cloud.** `/tmp` chỉ dành cho dữ liệu giả. GitHub artifacts, CSV/ZIP người dùng và Emulator export không thay backup production. Mỗi đơn vị tự triển khai cần xác định phương án backup/retention của mình trước khi lưu dữ liệu thật.
+The tool is **Emulator-only**, with no cloud mode or public backup endpoint. Its source is fixed to `demo-chotcong` and its target to `demo-chotcong-restore` on the same loopback Firestore Emulator. Independent guards reject real projects and remote hosts before SDK I/O. The backend includes maintenance locking; the local rehearsal does not activate production maintenance.
 
-## Định dạng và dữ liệu
+**There is no production backup, daily schedule, long-term storage, retention policy, or cloud restore rehearsal.** `/tmp` is for fake data only. GitHub artifacts, user CSV/ZIP exports, and Emulator exports do not replace production backups. Each self-hosting operator needs a backup/retention strategy before storing real data.
 
-- File `.ccbackup` phiên bản 1: manifest source project/database/namespace, loại snapshot/ledger, thời điểm bắt đầu/kết thúc, UUID và toàn bộ documents. Không nén; giới hạn 64 MiB/100.000 vị trí document, vượt giới hạn thì báo lỗi, không xuất một bản thiếu.
-- Mã hóa AES-256-GCM với key ngẫu nhiên 32 byte, IV mới mỗi file, header làm authenticated data. Sai key, đổi byte hoặc cắt file bị từ chối. Key `.cckey` là khóa mã hóa bản sao của ứng dụng, không phải service-account key của Google; phải cất riêng; không có key thì không khôi phục được. Không ghi plaintext ra đĩa hoặc log.
-- File mới 0600, xuất bằng atomic link không ghi đè. CLI buộc đường dẫn nằm ngoài checkout, từ chối symlink file và file có quyền đọc rộng. Thư mục/key cần được người vận hành bảo vệ; mã hóa không thay quản lý quyền truy cập và retention.
-- Codec phân biệt map/array/primitive/Timestamp (seconds + nanoseconds)/bytes/GeoPoint. Schema nghiệp vụ dùng ID chuỗi; từ chối DocumentReference vì SDK đọc thành đường dẫn tương đối, không giữ project/database gốc để chuyển an toàn. Từ chối kiểu chưa hỗ trợ, số không hữu hạn, số nguyên không an toàn; không âm thầm đổi kiểu. Firestore lưu thời gian với độ chính xác microsecond; codec giữ nguyên giá trị SDK đọc được.
-- Duyệt cả document cha không tồn tại và subcollections chưa biết. SDK phân trang danh sách tên; nội dung đọc tối đa 100 document/lần. Bao gồm students, sessions, statements, payments, audit, counters, operationRequests, shareTokens, accountDeletions và subcollections bổ sung trong namespace.
-- Không sao lưu `operations` (khóa vận hành) hoặc `shareRateLimits` (counter tạm). Snapshot có dataExports để bảo toàn nguồn, nhưng restore bỏ job xuất cũ vì readTime không dùng lại được ở database đích.
-- **Không xuất/khôi phục Firebase Auth, mật khẩu, credential hoặc cấu hình IAM/Rules/indexes.** Source code cấu hình vẫn ở Git. Đây là bản sao dữ liệu Firestore của ứng dụng; chưa phải phương án khôi phục khi mất cả Firebase project/Auth. Phải xác nhận phạm vi sự cố và liên kết UID/Auth trước cloud restore.
+## Format and data
 
-## Tính nhất quán và bảo trì
+- Version 1 `.ccbackup` files contain a manifest with source project/database/namespace, snapshot/ledger type, start/end timestamps, UUID, and documents. Files are uncompressed and limited to 64 MiB/100,000 document locations; exceeding a limit fails rather than producing an incomplete archive.
+- AES-256-GCM uses a random 32-byte key, a fresh IV per file, and authenticated header data. Incorrect keys, modified bytes, and truncated files are rejected. A `.cckey` is an application backup encryption key, not a Google service-account key. Store it separately: recovery is impossible without it. Plaintext is not written to disk or logs.
+- New files use mode 0600 and are published through an atomic link without overwriting. The CLI requires paths outside the checkout and rejects symlinks or files with broad read permissions. Operators must protect directories/keys; encryption does not replace access control or retention.
+- The codec preserves maps, arrays, primitives, Timestamp seconds/nanoseconds, bytes, and GeoPoint. Business schemas use string IDs. DocumentReference is rejected because SDK-relative paths do not safely preserve the original project/database for migration. Unsupported types, non-finite numbers, and unsafe integers are rejected. Firestore stores timestamps at microsecond precision; the codec preserves SDK values.
+- Traversal includes missing parent documents and unknown subcollections. SDK name listings are paginated; content reads are limited to 100 documents at a time. This includes students, sessions, statements, payments, audit, counters, operationRequests, shareTokens, accountDeletions, and additional namespace descendants.
+- `operations` locks and temporary `shareRateLimits` counters are excluded. Snapshots include dataExports, but restores discard old export jobs because their readTime cannot be reused in the target database.
+- **Firebase Auth, passwords, credentials, and IAM/Rules/index configuration are not exported or restored.** Configuration source remains in Git. This is an application Firestore backup, not a complete recovery strategy for losing Firebase/Auth. Establish the incident scope and UID/Auth mapping before designing cloud recovery.
 
-`apps/chotcong/operations/maintenance` là khóa bền, không có TTL tự mở. Business transaction, tạo profile, phát hành link, bắt đầu/claim job xóa đều đọc khóa trước ghi. API riêng tư trả 503 với thông báo giữ form; public link trả màn hình chung không khả dụng. Rate counters vẫn chạy và bị loại khỏi snapshot.
+## Consistency and maintenance
 
-Tạo khóa cũng đọc các job có leaseUntil > epoch trong transaction. Job đang xóa, kể cả lease đã cũ, phải hoàn thành/recover trước; tránh chụp trong lúc recursiveDelete/Auth worker còn chạy ngoài transaction. Sau khi đóng ghi, dữ liệu không đổi trong suốt quá trình duyệt, nên không phụ thuộc giới hạn thời gian readTime lịch sử.
+`apps/chotcong/operations/maintenance` is a durable lock with no automatic TTL release. Business transactions, profile creation, link issuance, and deletion job start/claim operations read it before writing. Private APIs return 503 while preserving form data; public links return a generic unavailable screen. Rate counters continue and are excluded from snapshots.
 
-Tất cả instance backend phải cùng source đã hỗ trợ khóa. Admin SDK/Console/seed/migration khác bỏ qua guard ứng dụng: người vận hành phải dừng các writer đó. Namespace không phải ranh giới IAM khi dùng chung Firebase project.
+Acquiring the lock also reads deletion jobs with leaseUntil greater than the epoch in a transaction. Deletions, including expired leases, must be completed or recovered first, avoiding a snapshot while recursiveDelete/Auth workers run outside transactions. With writers stopped, data remains unchanged during traversal without depending on historical readTime limits.
 
-Backup hoàn tất/lỗi thông thường đều nhả đúng khóa của lần chạy. Process bị kill có thể để lại khóa: đọc thông tin khóa, xác minh không còn job chạy, tìm và xóa file tạm chưa publish rồi mới dùng lệnh release bên dưới. Không tự xóa `accountDeletions` để mở ghi.
+All backend instances must run code that honors the lock. Other Admin SDK, Console, seed, and migration writers can bypass application guards and must be stopped by the operator. A namespace is not an IAM boundary in a shared project.
 
-## Chạy diễn tập local
+Successful backups and ordinary failures release their own lock. A killed process may leave a lock behind: inspect it, confirm no job is running, and locate/remove unpublished temporary files before using the release command below. Never delete `accountDeletions` to reopen writes.
 
-Cần Node 24, Emulator đang chạy theo README, `.env.local` chỉ trỏ demo/loopback và dữ liệu giả. Cài đặt chạy trong terminal thứ hai:
+## Running the local rehearsal
+
+Use Node 24, running emulators as described in the README, a demo/loopback `.env.local`, and fake data. In another terminal:
 
 ```bash
 mkdir -m 700 /tmp/chotcong-backup-rehearsal
@@ -39,18 +41,18 @@ npm run backup:local -- ledger --key /tmp/chotcong-backup-rehearsal/recovery.cck
 npm run backup:local -- restore --key /tmp/chotcong-backup-rehearsal/recovery.cckey --input /tmp/chotcong-backup-rehearsal/snapshot.ccbackup --ledger /tmp/chotcong-backup-rehearsal/deletions.ccbackup
 ```
 
-`verify` xác thực mã hóa và manifest; **restore mới kiểm tra toàn bộ codec và đối chiếu tài chính**. Target phải trống, chỉ cho phép có dấu xóa đã giữ từ trước; tool không ghi đè ứng dụng đã phục hồi thành công. Nếu target có dữ liệu không quen, dừng và điều tra, không xóa để ép tool chạy.
+`verify` checks encryption and the manifest; **restore performs full codec and financial reconciliation**. The target must be empty except for retained deletion markers. The tool does not overwrite a completed restore. Stop and investigate unfamiliar target data instead of deleting it to force a restore.
 
-Ledger bắt buộc mới hơn snapshot và không quá 24 giờ. Khi restore, tool còn đóng ghi source, đọc lại dấu xóa mới nhất và giữ khóa source đến hết kiểm tra target; không để khoảng trống giữa lưu ledger và bắt đầu phục hồi. Công cụ hiện yêu cầu source Emulator còn đọc được. Trường hợp nguồn đã mất hoàn toàn cần quy trình cloud riêng với ledger chống hồi sinh được bảo vệ độc lập, chưa được triển khai.
+The ledger must be newer than the snapshot and no more than 24 hours old. Restore also locks the source, reads current deletion markers, and holds the source lock through target verification. The current tool requires a readable source Emulator. Complete source loss needs a separate cloud recovery design with an independently protected deletion ledger, which is not implemented.
 
-Khôi phục ghép dấu xóa từ snapshot, ledger, target và source hiện tại; bỏ cả user tree tương ứng, kể cả phần đã ghi ở lần restore dở. Không tạo lại Auth user. Giữ trạng thái xóa, bỏ lease và đổi proofHash để mã tiếp tục cũ không dùng lại; job chưa xong cần quy trình xác thực/operator recovery theo quy trình operator của bản triển khai. Mọi shareTokens bị bỏ, mọi statement pointer đặt null, giáo viên phải tạo link mới.
+Restore merges deletion markers from the snapshot, ledger, target, and current source. It removes affected user trees, including partially restored data, without recreating Auth users. Deletion state is retained, leases are cleared, and proofHash changes invalidate old continuation proofs. Pending jobs require the deployment's authentication/operator recovery procedure. All shareTokens are dropped and statement pointers set to null; teachers must create new links.
 
-Đối chiếu trước ghi và sau phục hồi: tổng từng bảng kê, payments/paidVnd/activePaymentCount, học viên, giá/ngày/khóa buổi, counter/mã duy nhất, công nợ và học phí chưa lập bảng. Sau ghi còn so sánh **toàn bộ trường** qua codec, không chỉ tổng tiền. Chỉ mở khóa target khi mọi kiểm tra qua.
+Before and after restoring, reconcile statement totals, payments/paidVnd/activePaymentCount, students, rates/dates/lesson locks, counters/unique statement numbers, receivables, and unbilled tuition. After writing, compare **every field** through the codec, not just financial totals. Unlock the target only after all checks pass.
 
-Lỗi giữa batch giữ khóa restore ở target. Chạy lại cùng snapshot (UUID giữ nguyên) và ledger mới để tiếp tục; tool không tự mở target có dữ liệu dở. Khóa backup source có thể nhả sau lỗi vì source không bị ghi dữ liệu nghiệp vụ. Nếu source process chết để lại khóa backup, dùng đúng UUID đã log sau khi kiểm tra job:
+A failure between batches leaves the target restore lock in place. Retry with the same snapshot UUID and a fresh ledger; the tool does not silently unlock a partial target. The source backup lock may be released after a failure because source business data was not changed. If a terminated process left a source backup lock, inspect the jobs and use the exact logged UUID:
 
 ```bash
-npm run backup:local -- release --lock UUID_CUA_KHOA_BACKUP
+npm run backup:local -- release --lock BACKUP_LOCK_UUID
 ```
 
-Lệnh release không mở khóa restore. Nếu archive/codec/sổ tiền lỗi, giữ target đóng và điều tra; không đổi UUID hoặc tự xóa khóa để vượt kiểm tra. Không sửa trực tiếp snapshot đã mã hóa.
+This does not release a restore lock. Keep the target closed if archive, codec, or ledger checks fail. Do not change UUIDs or delete locks to bypass validation, and do not edit encrypted snapshots directly.
