@@ -1,0 +1,28 @@
+name: Feature request
+description: Propose an improvement to a teacher's workflow.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Workflow and problem
+      description: Explain who needs this and the current workaround. Use fictional examples.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed improvement
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: verification
+    attributes:
+      label: Data, privacy, and verification
+      description: What changes to stored data, permissions, money calculations, or tests might be needed?
+    validations:
+      required: true

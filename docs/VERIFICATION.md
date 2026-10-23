@@ -18,6 +18,8 @@ Verified on **24 October 2026** using macOS x64, Node 24.22.1, npm 11.19.1, Java
 
 Tests use demo projects and loopback only, without cloud business writes. The runner cleaned up its server/emulators afterward. Some Google SDK workers emitted metadata lookup warnings without failing tests. Emulator results do not prove real Google OAuth, HTTPS cookies, IAM, cloud indexes, or installation on real devices; verify these separately when self-hosting.
 
+The initial public source commit also [passed GitHub CI](https://github.com/devoralabsapp/chot-cong-open-source/actions/runs/40001554602). Subsequent documentation changes do not alter application code and should not be described as new runtime test runs.
+
 ## Sanitization scope
 
 The public edition starts with fresh Git history and a neutral author identity, excluding private history. It contains no actual environment files, credential stores, Emulator data, operational screenshots, internal reports, or personal machine paths. Deployment-specific Firebase/Vercel identifiers and domains were replaced with placeholders; smoke checks default to localhost. PNG icons contain no EXIF or text metadata.

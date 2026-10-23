@@ -2,6 +2,10 @@
 
 **English** | [Tiếng Việt](README.vi.md)
 
+[![Checks](https://github.com/devoralabsapp/chot-cong-open-source/actions/workflows/ci.yml/badge.svg)](https://github.com/devoralabsapp/chot-cong-open-source/actions/workflows/ci.yml)
+
+**Project status:** early-stage public source release. See [maintainers and maintenance process](MAINTAINERS.md), the [roadmap](ROADMAP.md), and the [changelog](CHANGELOG.md). External adoption has not yet been established.
+
 A lesson and tuition ledger for independent teachers, supporting individual lessons, groups, and classes billed after each lesson. Run it locally, self-host it, or fork it to fit your workflow. Released under the [MIT License](LICENSE).
 
 Repository documentation defaults to English. The application interface is currently in Vietnamese, with VND amounts and Vietnam business dates.

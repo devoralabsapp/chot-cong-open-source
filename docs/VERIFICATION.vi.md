@@ -18,6 +18,8 @@ Ngày xác minh: **24/10/2026**. Môi trường: macOS x64, Node 24.22.1, npm 11
 
 Các test chỉ dùng demo project và loopback, không có business write trên cloud. Runner đã tự dọn server/Emulator sau test. Có cảnh báo metadata lookup từ Google SDK trong một số worker; không làm fail test. Kết quả Emulator không chứng minh Google OAuth thật, HTTPS cookies, IAM, index cloud hoặc cài trên thiết bị thật; cần kiểm tra riêng khi tự triển khai.
 
+CI của commit mã nguồn public đầu tiên đã [qua trên GitHub](https://github.com/devoralabsapp/chot-cong-open-source/actions/runs/40001554602). Các lần cập nhật tài liệu sau đó không thay mã ứng dụng; không diễn giải chúng thành các lượt kiểm thử runtime mới.
+
 ## Phạm vi làm sạch
 
 Bản public bắt đầu bằng lịch sử Git mới với tác giả trung tính; không xuất lịch sử private. Không kèm file môi trường thực, kho credential, dữ liệu Emulator, screenshot vận hành, báo cáo nội bộ hoặc đường dẫn máy cá nhân. Định danh Firebase/Vercel và domain triển khai riêng được thay bằng placeholder; smoke check mặc định chỉ trỏ localhost. Icon PNG không có EXIF hoặc text metadata.

@@ -2,6 +2,10 @@
 
 [English](README.md) | **Tiếng Việt**
 
+[![Checks](https://github.com/devoralabsapp/chot-cong-open-source/actions/workflows/ci.yml/badge.svg)](https://github.com/devoralabsapp/chot-cong-open-source/actions/workflows/ci.yml)
+
+**Trạng thái:** bản mã nguồn public ở giai đoạn đầu, chưa có bằng chứng sử dụng rộng rãi bên ngoài. Xem [maintainer/quy trình bảo trì](MAINTAINERS.md), [roadmap](ROADMAP.md) và [changelog](CHANGELOG.md) (tiếng Anh).
+
 Sổ buổi dạy và học phí tiếng Việt cho giáo viên tự do: cá nhân, nhóm hoặc lớp học; tính theo buổi và thu sau. Bạn có thể chạy trên máy, tự triển khai hoặc fork để phát triển theo nhu cầu của mình. Phát hành theo [MIT](LICENSE).
 
 ## Tính năng

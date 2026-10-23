@@ -1,0 +1,45 @@
+name: Bug report
+description: Report a reproducible issue using fake or sanitized data.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include tokens, cookies, credentials, student records, or private screenshots.
+        Report vulnerabilities privately through the repository Security tab instead.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Before reporting
+      options:
+        - label: I searched existing issues and can reproduce this with fake or sanitized data.
+          required: true
+        - label: This report contains no credentials or personal/student information.
+          required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Node/Java versions, browser, source commit, and local Emulator or self-hosted setup. Do not paste environment variable values.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Provide the smallest reproducible example with fake data.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include sanitized error codes if useful, without request headers, tokens, or raw browser traces.
+    validations:
+      required: true
