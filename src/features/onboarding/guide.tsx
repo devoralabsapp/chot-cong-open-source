@@ -21,7 +21,7 @@ export function GettingStartedCard({
   return (
     <Card className="mb-6 border-border bg-accent-soft p-5">
       <p className="text-xs font-semibold text-primary">
-        BẮT ĐẦU VỚI CHỐT CÔNG
+        BẮT ĐẦU VỚI LESSONBROOK
       </p>
       <h2 className="serif mt-2 text-2xl">Ghi buổi dạy đầu tiên của bạn</h2>
       <p className="my-3 text-sm leading-6 text-muted-foreground">
@@ -239,8 +239,8 @@ export function OnboardingGuide({ initial }: { initial: OnboardingState }) {
         )}
       </Card>
       <p className="text-xs leading-6 text-muted-foreground">
-        Chốt Công chỉ tính các buổi bạn đã nhập, chưa bao gồm nợ cũ. Cần mạng để
-        lưu dữ liệu.
+        LessonBrook chỉ tính các buổi bạn đã nhập, chưa bao gồm nợ cũ. Cần mạng
+        để lưu dữ liệu.
       </p>
       <Link className="inline-block text-sm text-primary" href="/app">
         Tiếp tục vào ứng dụng

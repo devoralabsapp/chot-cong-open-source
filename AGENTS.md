@@ -8,7 +8,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-## Chốt Công — community edition
+## LessonBrook — community edition
 
 Read README.md and docs/ARCHITECTURE.md before changing behavior. Read the relevant installed Next.js guide in node_modules/next/dist/docs/ before editing code. Keep the pinned dependencies and Webpack unless an upgrade is explicitly in scope.
 

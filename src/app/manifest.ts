@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Chốt Công — Sổ buổi dạy & học phí",
-    short_name: "Chốt Công",
+    name: "LessonBrook — Sổ buổi dạy & học phí",
+    short_name: "LessonBrook",
     description: "Sổ buổi dạy dành cho giáo viên tự do",
     id: "/",
     scope: "/",

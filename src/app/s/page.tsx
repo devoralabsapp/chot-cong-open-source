@@ -2,7 +2,7 @@ import { type Metadata } from "next";
 import { PublicShare } from "@/features/sharing/public-share";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Bảng kê học phí · Chốt Công",
+  title: "Bảng kê học phí · LessonBrook",
   robots: { index: false, follow: false },
   referrer: "no-referrer",
 };

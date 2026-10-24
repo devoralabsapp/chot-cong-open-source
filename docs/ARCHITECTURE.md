@@ -15,6 +15,10 @@ Next.js App Router, React, TypeScript, Tailwind 4, Firebase Authentication, and 
 | `tests/integration` | HTTP/backend isolation with two UIDs, transactions, and data workflows |
 | `tests/e2e` | Chromium, real Auth Emulator popups, retries, and reloads |
 
+## Product name and compatibility
+
+LessonBrook is the product and repository name. Existing `chotcong` data paths, cookie names, demo project IDs and loopback guards remain internal compatibility identifiers. Renaming the product does not migrate or erase stored data; do not change these identifiers solely to rebrand a fork.
+
 ## Data boundaries
 
 All business operations go through server APIs. Derive the UID from a revocation-checked Firebase session; never accept browser-supplied owner IDs or document paths. Private data lives under `apps/chotcong/users/{uid}`. Admin SDK bypasses Rules, so backend isolation tests and client Rules tests provide separate evidence.

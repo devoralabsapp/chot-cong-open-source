@@ -34,3 +34,7 @@ Cookie phiên HttpOnly/Lax, Secure trên HTTPS, tối đa 5 ngày. Browser Auth 
 ## Giới hạn
 
 Không thanh toán ngân hàng tự động, lịch lặp, gói trả trước hoặc phân quyền trung tâm. Manifest chỉ là lối mở nhanh; không service worker/offline cache. Kiểm thử Emulator không chứng minh index/IAM/OAuth hoặc khả năng cài app trên thiết bị thật. Kiểm thử cloud cần staging riêng và dữ liệu giả.
+
+## Tên sản phẩm và tính tương thích
+
+LessonBrook là tên sản phẩm và repository. Các đường dẫn dữ liệu, tên cookie, mã demo project và guard loopback có `chotcong` tiếp tục là định danh nội bộ để giữ tương thích. Đổi tên hiển thị không di chuyển hoặc xóa dữ liệu; không đổi các định danh này chỉ để đặt tên lại bản fork.

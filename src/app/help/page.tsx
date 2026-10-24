@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 export const metadata: Metadata = {
   title: "Hướng dẫn & hỗ trợ",
   description:
-    "Cách ghi buổi, lập bảng kê, đối chiếu tiền và dùng Chốt Công trên điện thoại.",
+    "Cách ghi buổi, lập bảng kê, đối chiếu tiền và dùng LessonBrook trên điện thoại.",
 };
 
 export default function HelpPage() {
@@ -144,7 +144,7 @@ export default function HelpPage() {
           </div>
         </details>
         <p>
-          Chốt Công ghi tiền theo xác nhận của giáo viên; bạn cần tự đối chiếu
+          LessonBrook ghi tiền theo xác nhận của giáo viên; bạn cần tự đối chiếu
           tiền mặt hoặc tài khoản ngân hàng. Bảng kê dùng để đối chiếu học phí.
         </p>
       </section>
@@ -198,7 +198,7 @@ export default function HelpPage() {
         </p>
       </section>
       <section id="install" className="space-y-4">
-        <h2 className="serif text-2xl">Thêm Chốt Công vào màn hình chính</h2>
+        <h2 className="serif text-2xl">Thêm LessonBrook vào màn hình chính</h2>
         <p>
           Mở trang tổng quan{" "}
           <Link
@@ -258,7 +258,7 @@ export default function HelpPage() {
         <h2 className="serif text-2xl">Cần trợ giúp?</h2>
         <p>
           Trong giai đoạn thử nghiệm, liên hệ trực tiếp người đã mời bạn dùng
-          Chốt Công qua kênh hai bên đang trao đổi.
+          LessonBrook qua kênh hai bên đang trao đổi.
         </p>
         <p>
           Cho biết màn hình đang dùng, thao tác vừa làm, giờ gặp lỗi và thông

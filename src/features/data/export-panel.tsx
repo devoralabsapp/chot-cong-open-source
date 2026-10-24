@@ -109,7 +109,7 @@ export function ExportPanel() {
           ),
         );
         files["HUONG-DAN.txt"] = strToU8(
-          `Chốt Công — Dữ liệu của bạn\nThời điểm dữ liệu (UTC): ${current.exportedAt}\nCSV dùng UTF-8 và số nguyên VND. Ô văn bản có nguy cơ thành công thức được thêm dấu văn bản (tab). JSON giữ giá trị gốc.\nBao gồm lịch sử lưu trữ/hủy/vô hiệu hóa và ghi chú riêng. Hãy giữ tệp ở nơi an toàn.\nGói này phục vụ đối chiếu/lấy lại dữ liệu, không thay bản backup phục hồi Firestore.\n`,
+          `LessonBrook — Dữ liệu của bạn\nThời điểm dữ liệu (UTC): ${current.exportedAt}\nCSV dùng UTF-8 và số nguyên VND. Ô văn bản có nguy cơ thành công thức được thêm dấu văn bản (tab). JSON giữ giá trị gốc.\nBao gồm lịch sử lưu trữ/hủy/vô hiệu hóa và ghi chú riêng. Hãy giữ tệp ở nơi an toàn.\nGói này phục vụ đối chiếu/lấy lại dữ liệu, không thay bản backup phục hồi Firestore.\n`,
         );
         if (
           Object.values(files).reduce(
@@ -124,12 +124,12 @@ export function ExportPanel() {
         }
         const zipped = zipSync(files, { level: 1 });
         blob = new Blob([new Uint8Array(zipped)], { type: "application/zip" });
-        name = `chot-cong-du-lieu-${date}.zip`;
+        name = `lessonbrook-du-lieu-${date}.zip`;
       } else {
         blob = new Blob(["\uFEFF", ...current.csv[choice]!], {
           type: "text/csv;charset=utf-8",
         });
-        name = `chot-cong-${choice}-${date}.csv`;
+        name = `lessonbrook-${choice}-${date}.csv`;
       }
       const url = URL.createObjectURL(blob),
         anchor = document.createElement("a");

@@ -1,8 +1,8 @@
-# Chốt Công · Open Source
+# LessonBrook
 
 **English** | [Tiếng Việt](README.vi.md)
 
-[![Checks](https://github.com/devoralabsapp/chot-cong-open-source/actions/workflows/ci.yml/badge.svg)](https://github.com/devoralabsapp/chot-cong-open-source/actions/workflows/ci.yml)
+[![Checks](https://github.com/devoralabsapp/lessonbrook/actions/workflows/ci.yml/badge.svg)](https://github.com/devoralabsapp/lessonbrook/actions/workflows/ci.yml)
 
 **Project status:** early-stage public source release. See [maintainers and maintenance process](MAINTAINERS.md), the [roadmap](ROADMAP.md), and the [changelog](CHANGELOG.md). External adoption has not yet been established.
 
@@ -25,8 +25,8 @@ All business reads and writes go through Node server APIs. The Firebase client i
 Install **Node.js 24.x**, npm, **Java 21**, and Git. The Node version is specified in `.nvmrc`. On macOS, choose the matching Intel (`x86_64`) or Apple Silicon (`arm64`) binary. If needed, select Java with `export JAVA_HOME="$(/usr/libexec/java_home -v 21)"` and add `$JAVA_HOME/bin` to PATH. On Windows, you can use WSL with tools installed inside WSL.
 
 ```bash
-git clone https://github.com/devoralabsapp/chot-cong-open-source.git
-cd chot-cong-open-source
+git clone https://github.com/devoralabsapp/lessonbrook.git
+cd lessonbrook
 npm ci
 test -e .env.local || cp .env.example .env.local
 npm run emulators

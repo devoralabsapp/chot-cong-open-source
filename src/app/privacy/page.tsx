@@ -5,21 +5,21 @@ import { InfoLayout } from "@/components/info-layout";
 export const metadata: Metadata = {
   title: "Dữ liệu & quyền riêng tư",
   description:
-    "Dữ liệu Chốt Công lưu, nội dung link chia sẻ và cách xuất hoặc xóa tài khoản.",
+    "Dữ liệu LessonBrook lưu, nội dung link chia sẻ và cách xuất hoặc xóa tài khoản.",
 };
 
 export default function PrivacyPage() {
   return (
     <InfoLayout
       title="Dữ liệu trong sổ của bạn"
-      description="Bản giải thích cho giai đoạn thử nghiệm Chốt Công · Cập nhật ngày 16/10/2026."
+      description="Bản giải thích cho giai đoạn thử nghiệm LessonBrook · Cập nhật ngày 16/10/2026."
     >
       <section className="space-y-3">
         <h2 className="serif text-2xl">Dữ liệu nào được lưu?</h2>
         <p>
-          Chốt Công dùng tài khoản Google để đăng nhập, lưu định danh tài khoản,
-          tên và email để gắn đúng sổ của bạn. Bạn có thể sửa tên giáo viên và
-          thêm thông tin nhận chuyển khoản.
+          LessonBrook dùng tài khoản Google để đăng nhập, lưu định danh tài
+          khoản, tên và email để gắn đúng sổ của bạn. Bạn có thể sửa tên giáo
+          viên và thêm thông tin nhận chuyển khoản.
         </p>
         <p>
           Sổ lưu học viên, lớp và danh sách tham gia, đơn giá, buổi dạy, bảng
@@ -28,9 +28,10 @@ export default function PrivacyPage() {
           nhập thông tin cần thiết cho việc dạy và đối chiếu học phí.
         </p>
         <p>
-          Dữ liệu được xử lý qua máy chủ Chốt Công trên Vercel, sử dụng Firebase
-          Authentication và Cloud Firestore của Google để đăng nhập và lưu sổ.
-          Người vận hành có quyền quản trị cần thiết để hỗ trợ và xử lý sự cố.
+          Dữ liệu được xử lý qua máy chủ LessonBrook trên Vercel, sử dụng
+          Firebase Authentication và Cloud Firestore của Google để đăng nhập và
+          lưu sổ. Người vận hành có quyền quản trị cần thiết để hỗ trợ và xử lý
+          sự cố.
         </p>
       </section>
       <section className="space-y-3">
@@ -68,7 +69,7 @@ export default function PrivacyPage() {
         <p>
           Ứng dụng giữ lịch sử thao tác trong sổ để đối chiếu và thông tin kỹ
           thuật tối thiểu để xử lý lỗi, chống truy cập tự động. Trang bảng kê
-          chia sẻ không nạp công cụ phân tích bên thứ ba. Chốt Công không gửi
+          chia sẻ không nạp công cụ phân tích bên thứ ba. LessonBrook không gửi
           tin nhắn Zalo, đọc giao dịch ngân hàng hoặc tự xác nhận chuyển khoản.
         </p>
       </section>
@@ -101,7 +102,7 @@ export default function PrivacyPage() {
         </p>
         <p>
           Quy trình xóa học viên, buổi dạy, bảng kê, khoản thu, thông tin nhận
-          tiền, lịch sử trong sổ và tài khoản đăng nhập Chốt Công. Tài khoản
+          tiền, lịch sử trong sổ và tài khoản đăng nhập LessonBrook. Tài khoản
           Google của bạn không bị xóa. Sau khi xác nhận, không thể hủy yêu cầu.
         </p>
         <p>

@@ -73,7 +73,7 @@ test("360px: ZIP đủ dữ liệu → retry tải → Google xác nhận xóa �
   const download = await downloadPromise,
     path = await download.path();
   expect(download.suggestedFilename()).toMatch(
-    /^chot-cong-du-lieu-\d{4}-\d{2}-\d{2}\.zip$/,
+    /^lessonbrook-du-lieu-\d{4}-\d{2}-\d{2}\.zip$/,
   );
   expect(keys).toHaveLength(1);
   expect(exportUrls[0]).toBe(exportUrls[1]);

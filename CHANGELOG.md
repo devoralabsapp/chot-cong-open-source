@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Rebrand the application as LessonBrook and rename the repository to `devoralabsapp/lessonbrook`. Update clone instructions, badges and community/security links. Existing data identifiers and local guards remain compatible.
+
 ## 0.1.0 — 2026-10-24
 
 Initial MIT-licensed public source release.

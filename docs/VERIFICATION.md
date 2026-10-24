@@ -18,10 +18,14 @@ Verified on **24 October 2026** using macOS x64, Node 24.22.1, npm 11.19.1, Java
 
 Tests use demo projects and loopback only, without cloud business writes. The runner cleaned up its server/emulators afterward. Some Google SDK workers emitted metadata lookup warnings without failing tests. Emulator results do not prove real Google OAuth, HTTPS cookies, IAM, cloud indexes, or installation on real devices; verify these separately when self-hosting.
 
-The initial public source commit also [passed GitHub CI](https://github.com/devoralabsapp/chot-cong-open-source/actions/runs/40001554602). Subsequent documentation changes do not alter application code and should not be described as new runtime test runs.
+The initial public source commit also [passed GitHub CI](https://github.com/devoralabsapp/lessonbrook/actions/runs/40001554602). The documentation-only follow-ups did not alter application code; the later branding update was revalidated separately below.
 
 ## Sanitization scope
 
 The public edition starts with fresh Git history and a neutral author identity, excluding private history. It contains no actual environment files, credential stores, Emulator data, operational screenshots, internal reports, or personal machine paths. Deployment-specific Firebase/Vercel identifiers and domains were replaced with placeholders; smoke checks default to localhost. PNG icons contain no EXIF or text metadata.
 
 Gitleaks and identifier reviews reduce exposure risk but cannot guarantee the absence of every kind of sensitive information. Do not add real data or secrets to issues, pull requests, or commits when developing further.
+
+## LessonBrook rename — 24 October 2026
+
+Revalidated the renamed application on macOS using the same pinned runtime/dependency versions: lint, typecheck, unit tests (60), Webpack build, backend/Rules tests (53) and browser E2E (12) all passed: **125 total**. The new title/wordmark and 360px layout were also checked. Gitleaks 8.30.1 found no secrets in the branding diff or public Git history, and the deployment-identifier/personal-path review found no matches. This evidence covers the public source edition, independently of any hosted deployment.

@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Report a security vulnerability privately
-    url: https://github.com/devoralabsapp/chot-cong-open-source/security/advisories/new
+    url: https://github.com/devoralabsapp/lessonbrook/security/advisories/new
     about: Do not disclose vulnerabilities, credentials, or student data in public issues.

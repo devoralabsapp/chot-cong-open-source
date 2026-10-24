@@ -58,7 +58,7 @@ export function PublicShare() {
   return (
     <main className="mx-auto max-w-2xl space-y-5 px-4 py-8 sm:py-12">
       <p className="serif text-xl text-primary">
-        Chốt Công{" "}
+        LessonBrook{" "}
         <span className="font-sans text-xs text-muted-foreground">
           · Sổ buổi dạy & học phí
         </span>

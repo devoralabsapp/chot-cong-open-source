@@ -1,8 +1,8 @@
-# Chốt Công · Open Source
+# LessonBrook
 
 [English](README.md) | **Tiếng Việt**
 
-[![Checks](https://github.com/devoralabsapp/chot-cong-open-source/actions/workflows/ci.yml/badge.svg)](https://github.com/devoralabsapp/chot-cong-open-source/actions/workflows/ci.yml)
+[![Checks](https://github.com/devoralabsapp/lessonbrook/actions/workflows/ci.yml/badge.svg)](https://github.com/devoralabsapp/lessonbrook/actions/workflows/ci.yml)
 
 **Trạng thái:** bản mã nguồn public ở giai đoạn đầu, chưa có bằng chứng sử dụng rộng rãi bên ngoài. Xem [maintainer/quy trình bảo trì](MAINTAINERS.md), [roadmap](ROADMAP.md) và [changelog](CHANGELOG.md) (tiếng Anh).
 
@@ -23,8 +23,8 @@ Mọi đọc/ghi nghiệp vụ đi qua Node server API. Firebase client chỉ d�
 Cần **Node.js 24.x**, npm, **Java 21** và Git. Dùng Node theo `.nvmrc`. Trên macOS, chọn đúng binary Intel (`x86_64`) hoặc Apple Silicon (`arm64`); nếu Java chưa được chọn, dùng `export JAVA_HOME="$(/usr/libexec/java_home -v 21)"` và thêm `$JAVA_HOME/bin` vào PATH. Windows có thể dùng WSL với công cụ cài trong WSL.
 
 ```bash
-git clone https://github.com/devoralabsapp/chot-cong-open-source.git
-cd chot-cong-open-source
+git clone https://github.com/devoralabsapp/lessonbrook.git
+cd lessonbrook
 npm ci
 test -e .env.local || cp .env.example .env.local
 npm run emulators

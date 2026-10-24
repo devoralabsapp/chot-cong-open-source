@@ -74,7 +74,7 @@ export function LoginForm({ serverConfigured }: { serverConfigured: boolean }) {
           </p>
         </div>
         <p className="text-xs text-[#667459]">
-          Chốt Công · Sổ buổi dạy & học phí
+          LessonBrook · Sổ buổi dạy & học phí
         </p>
       </section>
       <section className="flex flex-col px-6 py-8 sm:px-12">
@@ -151,7 +151,7 @@ export function LoginForm({ serverConfigured }: { serverConfigured: boolean }) {
             </summary>
             <ol className="mt-3 list-decimal space-y-2 pl-5">
               <li>
-                Cho phép cửa sổ bật lên cho trang Chốt Công trong trình duyệt.
+                Cho phép cửa sổ bật lên cho trang LessonBrook trong trình duyệt.
               </li>
               <li>
                 Đóng cửa sổ đang báo lỗi, quay lại trang này và nhấn nút Google
@@ -159,7 +159,7 @@ export function LoginForm({ serverConfigured }: { serverConfigured: boolean }) {
                 sử.
               </li>
               <li>
-                Nếu mở từ Zalo/Facebook, dùng menu để mở Chốt Công bằng Safari
+                Nếu mở từ Zalo/Facebook, dùng menu để mở LessonBrook bằng Safari
                 hoặc Chrome. Giữ nguyên trình duyệt trong suốt lần đăng nhập.
               </li>
             </ol>

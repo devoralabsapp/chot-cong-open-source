@@ -1,6 +1,6 @@
 # Maintainers and project status
 
-The primary maintenance account is [@devoralabsapp](https://github.com/devoralabsapp), which owns this repository. Use public issues for reproducible bugs and proposals, and [private vulnerability reporting](https://github.com/devoralabsapp/chot-cong-open-source/security/advisories/new) for security concerns. Do not include personal information, credentials, or student records.
+The primary maintenance account is [@devoralabsapp](https://github.com/devoralabsapp), which owns this repository. Use public issues for reproducible bugs and proposals, and [private vulnerability reporting](https://github.com/devoralabsapp/lessonbrook/security/advisories/new) for security concerns. Do not include personal information, credentials, or student records.
 
 This is an early-stage, independently maintained project. Broad external adoption and download counts have not been established. The public edition was published on 24 October 2026 with fresh history to exclude private operational records and personal information. Its short commit history should not be represented as a long-running public maintenance record.
 

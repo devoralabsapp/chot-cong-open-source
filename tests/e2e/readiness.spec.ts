@@ -19,7 +19,7 @@ test("360px: hướng dẫn công khai, manifest/icon hợp lệ và trang riên
     .getByRole("link", { name: "Thêm vào màn hình chính" })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Thêm Chốt Công vào màn hình chính" }),
+    page.getByRole("heading", { name: "Thêm LessonBrook vào màn hình chính" }),
   ).toBeInViewport();
   expect(
     await page.evaluate(

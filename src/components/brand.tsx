@@ -4,15 +4,15 @@ export function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <Link
       href="/app"
-      className="inline-flex items-center gap-3"
-      aria-label="Chốt Công — trang tổng quan"
+      className={compact ? "inline-flex min-h-11 items-center gap-2" : "inline-flex items-center gap-3"}
+      aria-label="LessonBrook — trang tổng quan"
     >
-      <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-white">
-        <NotebookPen size={22} />
+      <span className={compact ? "flex size-8 items-center justify-center rounded-lg bg-primary text-white" : "flex size-10 items-center justify-center rounded-xl bg-primary text-white"}>
+        <NotebookPen size={compact ? 18 : 22} />
       </span>
       <span>
-        <span className="block text-lg font-bold tracking-tight">
-          Chốt Công<span className="text-[#acb77f]">.</span>
+        <span className={compact ? "block text-base font-bold tracking-tight" : "block text-lg font-bold tracking-tight"}>
+          LessonBrook<span className="text-[#acb77f]">.</span>
         </span>
         {!compact && (
           <span className="block text-[10px] tracking-wide text-muted-foreground">

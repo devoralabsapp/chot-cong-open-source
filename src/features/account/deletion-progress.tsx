@@ -48,7 +48,7 @@ export function DeletionProgress() {
   return (
     <main className="mx-auto max-w-xl px-5 py-12">
       <Link href="/" className="serif text-xl text-primary">
-        Chốt Công · Sổ buổi dạy & học phí
+        LessonBrook · Sổ buổi dạy & học phí
       </Link>
       <Card className="mt-8 space-y-5 p-6">
         <h1 className="serif text-3xl">

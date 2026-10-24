@@ -6,7 +6,7 @@ import { InfoLinks } from "@/components/info-links";
 export default function Home() {
   return (
     <main className="min-h-dvh">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-7">
+      <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-7">
         <Brand />
         <Button asChild variant="outline">
           <Link href="/login">
@@ -84,8 +84,8 @@ export default function Home() {
         </div>
       </section>
       <footer className="mx-auto max-w-6xl px-6 py-12 text-xs leading-5 text-muted-foreground">
-        Chốt Công · Sổ buổi dạy & học phí cho giáo viên piano, ngoại ngữ và gia
-        sư.
+        LessonBrook · Sổ buổi dạy & học phí cho giáo viên piano, ngoại ngữ và
+        gia sư.
         <br />
         Sổ bắt đầu từ các buổi bạn nhập; chưa bao gồm khoản nợ cũ.
         <div className="mt-5">
